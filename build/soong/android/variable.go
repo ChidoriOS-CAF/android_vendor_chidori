@@ -48,6 +48,7 @@ type ProductVariables struct {
 	Device_support_legacy_hwfde  *bool `json:",omitempty"`
 	Device_support_wait_for_qsee  *bool `json:",omitempty"`
 	Has_legacy_camera_hal1  *bool `json:",omitempty"`
+	Java_Source_Overlays *string `json:",omitempty"`
 	Specific_camera_parameter_library  *string `json:",omitempty"`
 	Target_process_sdk_version_override *string `json:",omitempty"`
 	Target_shim_libs  *string `json:",omitempty"`
