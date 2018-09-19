@@ -6,3 +6,5 @@
 ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
 include vendor/chidori/config/BoardConfigQCOM.mk
 endif
+
+include vendor/chidori/config/BoardConfigSoong.mk
