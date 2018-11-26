@@ -1,11 +1,11 @@
-# custom functions that extend build/envsetup.sh
+# chidori functions that extend build/envsetup.sh
 
-function custom_device_combos()
+function chidori_device_combos()
 {
     local T list_file variant device
 
     T="$(gettop)"
-    list_file="${T}/vendor/custom/custom.devices"
+    list_file="${T}/vendor/chidori/chidori.devices"
     variant1="userdebug"
     variant2="user"
 
@@ -28,46 +28,46 @@ function custom_device_combos()
     if [[ ! -f "${list_file}" ]]
     then
         echo "unable to find device list: ${list_file}"
-        list_file="${T}/vendor/custom/custom.devices"
+        list_file="${T}/vendor/chidori/chidori.devices"
         echo "defaulting device list file to: ${list_file}"
     fi
 
     while IFS= read -r device
     do
-        add_lunch_combo "custom_${device}-${variant1}"
-        add_lunch_combo "custom_${device}-${variant2}"
+        add_lunch_combo "chidori_${device}-${variant1}"
+        add_lunch_combo "chidori_${device}-${variant2}"
     done < "${list_file}"
 }
 
-function custom_rename_function()
+function chidori_rename_function()
 {
-    eval "original_custom_$(declare -f ${1})"
+    eval "original_chidori_$(declare -f ${1})"
 }
 
-function _custom_build_hmm() #hidden
+function _chidori_build_hmm() #hidden
 {
     printf "%-8s %s" "${1}:" "${2}"
 }
 
-function custom_append_hmm()
+function chidori_append_hmm()
 {
-    HMM_DESCRIPTIVE=("${HMM_DESCRIPTIVE[@]}" "$(_custom_build_hmm "$1" "$2")")
+    HMM_DESCRIPTIVE=("${HMM_DESCRIPTIVE[@]}" "$(_chidori_build_hmm "$1" "$2")")
 }
 
-function custom_add_hmm_entry()
+function chidori_add_hmm_entry()
 {
     for c in ${!HMM_DESCRIPTIVE[*]}
     do
         if [[ "${1}" == $(echo "${HMM_DESCRIPTIVE[$c]}" | cut -f1 -d":") ]]
         then
-            HMM_DESCRIPTIVE[${c}]="$(_custom_build_hmm "$1" "$2")"
+            HMM_DESCRIPTIVE[${c}]="$(_chidori_build_hmm "$1" "$2")"
             return
         fi
     done
-    custom_append_hmm "$1" "$2"
+    chidori_append_hmm "$1" "$2"
 }
 
-function customremote()
+function chidoriremote()
 {
     local proj pfx project
 
@@ -76,7 +76,7 @@ function customremote()
         echo "Not in a git directory. Please run this from an Android repository you wish to set up."
         return
     fi
-    git remote rm custom 2> /dev/null
+    git remote rm chidori 2> /dev/null
 
     proj="$(pwd -P | sed "s#$ANDROID_BUILD_TOP/##g")"
 
@@ -86,8 +86,8 @@ function customremote()
 
     project="${proj//\//_}"
 
-    git remote add custom "git@github.com:Kalil-CAF/$pfx$project"
-    echo "Remote 'custom' created"
+    git remote add chidori "git@github.com:ChidoriOS/$pfx$project"
+    echo "Remote 'chidori' created"
 }
 
 function cmremote()
@@ -147,11 +147,11 @@ function cafremote()
     echo "Remote 'caf' created"
 }
 
-function custom_push()
+function chidori_push()
 {
     local branch ssh_name path_opt proj
     branch="lp5.1"
-    ssh_name="custom_review"
+    ssh_name="chidori_review"
     path_opt=
 
     if [[ "$1" ]]
@@ -169,24 +169,24 @@ function custom_push()
         proj="android_$proj"
     fi
 
-    git $path_opt push "ssh://${ssh_name}/Kalil-CAF/$proj" "HEAD:refs/for/$branch"
+    git $path_opt push "ssh://${ssh_name}/ChidoriOS/$proj" "HEAD:refs/for/$branch"
 }
 
 
-custom_rename_function hmm
+chidori_rename_function hmm
 function hmm() #hidden
 {
     local i T
     T="$(gettop)"
-    original_custom_hmm
+    original_chidori_hmm
     echo
 
-    echo "vendor/custom extended functions. The complete list is:"
-    for i in $(grep -P '^function .*$' "$T/vendor/custom/build/envsetup.sh" | grep -v "#hidden" | sed 's/function \([a-z_]*\).*/\1/' | sort | uniq); do
+    echo "vendor/chidori extended functions. The complete list is:"
+    for i in $(grep -P '^function .*$' "$T/vendor/chidori/build/envsetup.sh" | grep -v "#hidden" | sed 's/function \([a-z_]*\).*/\1/' | sort | uniq); do
         echo "$i"
     done |column
 }
 
-custom_append_hmm "customremote" "Add a git remote for matching custom repository"
-custom_append_hmm "aospremote" "Add git remote for matching AOSP repository"
-custom_append_hmm "cafremote" "Add git remote for matching CodeAurora repository."
+chidori_append_hmm "chidoriremote" "Add a git remote for matching chidori repository"
+chidori_append_hmm "aospremote" "Add git remote for matching AOSP repository"
+chidori_append_hmm "cafremote" "Add git remote for matching CodeAurora repository."

@@ -20,37 +20,37 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Backup tool
 PRODUCT_COPY_FILES += \
-    vendor/custom/prebuilt/common/bin/backuptool.sh:install/bin/backuptool.sh \
-    vendor/custom/prebuilt/common/bin/backuptool.functions:install/bin/backuptool.functions \
-    vendor/custom/prebuilt/common/bin/50-custom.sh:system/addon.d/50-custom.sh \
-    vendor/custom/prebuilt/common/bin/clean_cache.sh:system/bin/clean_cache.sh
+    vendor/chidori/prebuilt/common/bin/backuptool.sh:install/bin/backuptool.sh \
+    vendor/chidori/prebuilt/common/bin/backuptool.functions:install/bin/backuptool.functions \
+    vendor/chidori/prebuilt/common/bin/50-chidori.sh:system/addon.d/50-chidori.sh \
+    vendor/chidori/prebuilt/common/bin/clean_cache.sh:system/bin/clean_cache.sh
 
 ifeq ($(AB_OTA_UPDATER),true)
 PRODUCT_COPY_FILES += \
-    vendor/custom/prebuilt/common/bin/backuptool_ab.sh:system/bin/backuptool_ab.sh \
-    vendor/custom/prebuilt/common/bin/backuptool_ab.functions:system/bin/backuptool_ab.functions \
-    vendor/custom/prebuilt/common/bin/backuptool_postinstall.sh:system/bin/backuptool_postinstall.sh
+    vendor/chidori/prebuilt/common/bin/backuptool_ab.sh:system/bin/backuptool_ab.sh \
+    vendor/chidori/prebuilt/common/bin/backuptool_ab.functions:system/bin/backuptool_ab.functions \
+    vendor/chidori/prebuilt/common/bin/backuptool_postinstall.sh:system/bin/backuptool_postinstall.sh
 endif
 
 # Backup services whitelist
 PRODUCT_COPY_FILES += \
-    vendor/custom/config/permissions/backup.xml:system/etc/sysconfig/backup.xml
+    vendor/chidori/config/permissions/backup.xml:system/etc/sysconfig/backup.xml
 
 # Signature compatibility validation
 PRODUCT_COPY_FILES += \
-    vendor/custom/prebuilt/common/bin/otasigcheck.sh:install/bin/otasigcheck.sh
+    vendor/chidori/prebuilt/common/bin/otasigcheck.sh:install/bin/otasigcheck.sh
 
-# Custom-specific init file
+# Chidori-specific init file
 PRODUCT_COPY_FILES += \
-    vendor/custom/prebuilt/common/etc/init.local.rc:root/init.custom.rc
+    vendor/chidori/prebuilt/common/etc/init.local.rc:root/init.chidori.rc
 
 # Copy LatinIME for gesture typing
 PRODUCT_COPY_FILES += \
-    vendor/custom/prebuilt/common/lib/libjni_latinimegoogle.so:system/lib/libjni_latinimegoogle.so
+    vendor/chidori/prebuilt/common/lib/libjni_latinimegoogle.so:system/lib/libjni_latinimegoogle.so
 
 # SELinux filesystem labels
 PRODUCT_COPY_FILES += \
-    vendor/custom/prebuilt/common/etc/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel
+    vendor/chidori/prebuilt/common/etc/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel
 
 # Enable SIP+VoIP on all targets
 PRODUCT_COPY_FILES += \
@@ -58,13 +58,13 @@ PRODUCT_COPY_FILES += \
 
 # Don't export PS1 in /system/etc/mkshrc.
 PRODUCT_COPY_FILES += \
-    vendor/custom/prebuilt/common/etc/mkshrc:system/etc/mkshrc \
-    vendor/custom/prebuilt/common/etc/sysctl.conf:system/etc/sysctl.conf
+    vendor/chidori/prebuilt/common/etc/mkshrc:system/etc/mkshrc \
+    vendor/chidori/prebuilt/common/etc/sysctl.conf:system/etc/sysctl.conf
 
 # Specific startup services
 PRODUCT_COPY_FILES += \
-    vendor/custom/prebuilt/common/etc/init.d/90userinit:system/etc/init.d/90userinit \
-    vendor/custom/prebuilt/common/bin/sysinit:system/bin/sysinit
+    vendor/chidori/prebuilt/common/etc/init.d/90userinit:system/etc/init.d/90userinit \
+    vendor/chidori/prebuilt/common/bin/sysinit:system/bin/sysinit
 
 # Required packages
 PRODUCT_PACKAGES += \
@@ -96,7 +96,6 @@ PRODUCT_PACKAGES += \
     BluetoothExt \
     Launcher3Dark
 
-
 # Extra tools
 PRODUCT_PACKAGES += \
     openvpn \
@@ -107,7 +106,6 @@ PRODUCT_PACKAGES += \
     mkfs.exfat \
     ntfsfix \
     ntfs-3g
-
 
 PRODUCT_PACKAGES += \
     charger_res_images
@@ -133,7 +131,7 @@ PRODUCT_PACKAGES += \
     AndroidDarkThemeOverlay \
     SettingsDarkThemeOverlay
 
-PRODUCT_PACKAGE_OVERLAYS += vendor/custom/overlay/common
+PRODUCT_PACKAGE_OVERLAYS += vendor/chidori/overlay/common
 
 # Qualcomm performance frameworks
 ifeq ($(USE_QCOM_PERF),true)
@@ -151,27 +149,29 @@ PRODUCT_PACKAGES += \
    Mono
 
 # Versioning System
-# custom first version.
-PRODUCT_VERSION_MAINTENANCE = 1.0
-CUSTOM_POSTFIX := -$(shell date +"%d_%m")
-ifdef CUSTOM_BUILD_EXTRA
-    CUSTOM_POSTFIX := -$(CUSTOM_BUILD_EXTRA)
+# chidori first version.
+PRODUCT_VERSION_MAJOR = 1
+PRODUCT_VERSION_MINOR = 0
+PRODUCT_VERSION_MAINTENANCE = 0
+CHIDORI_POSTFIX := -$(shell date +"%Y%m%d")
+ifdef CHIDORI_BUILD_EXTRA
+    CHIDORI_POSTFIX := -$(CHIDORI_BUILD_EXTRA)
 endif
 
-ifndef CUSTOM_BUILD_TYPE
-    CUSTOM_BUILD_TYPE := UNOFFICIAL
+ifndef CHIDORI_BUILD_TYPE
+    CHIDORI_BUILD_TYPE := UNOFFICIAL
 endif
 
 # Set all versions
-CUSTOM_VERSION := KAF-$(CUSTOM_BUILD)$(CUSTOM_POSTFIX)-$(shell sed '5q;d' .repo/manifest.xml | sed 's/.*tags\/\(.*\)".*/\1/')-$(CUSTOM_BUILD_TYPE)
-CUSTOM_MOD_VERSION := $(CUSTOM_VERSION)
+CHIDORI_VERSION := ChidoriOS-$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR)-$(CHIDORI_BUILD)-$(CHIDORI_BUILD_TYPE)$(CHIDORI_POSTFIX)
+CHIDORI_MOD_VERSION := $(CHIDORI_VERSION)
 
 PRODUCT_PROPERTY_OVERRIDES += \
     BUILD_DISPLAY_ID=$(BUILD_ID) \
-    ro.custom.version=$(CUSTOM_VERSION) \
-    ro.modversion=$(CUSTOM_VERSION) \
-    ro.custom.buildtype=$(CUSTOM_BUILD_TYPE)
+    ro.chidori.version=$(CHIDORI_VERSION) \
+    ro.modversion=$(CHIDORI_VERSION) \
+    ro.chidori.buildtype=$(CHIDORI_BUILD_TYPE)
 
-EXTENDED_POST_PROCESS_PROPS := vendor/custom/tools/custom_process_props.py
+EXTENDED_POST_PROCESS_PROPS := vendor/chidori/tools/chidori_process_props.py
 
--include vendor/custom/config/qualcomm.mk
+-include vendor/chidori/config/qualcomm.mk

@@ -1,5 +1,5 @@
 # Bring in Qualcomm helper macros
-include vendor/custom/build/core/qcom_utils.mk
+include vendor/chidori/build/core/qcom_utils.mk
 
 # Set device-specific HALs into project pathmap
 define set-device-specific-path
@@ -13,10 +13,10 @@ endef
 
 # How this works:
 # If the user didn't override TARGET_PRODUCT_HALS, set them according to his platform.
-REMOTE ?= kaf
+REMOTE ?= chidori
 
 ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
-REVI ?= 9.0-caf
+REVI ?= pie-caf
 
 TARGET_PRODUCT_HALS ?= \
 hardware/qcom/audio:hardware_qcom_audio:$(REMOTE):$(REVI)-$(QCOM_HARDWARE_VARIANT) \
@@ -32,7 +32,7 @@ hardware/qcom/wlan:hardware_qcom_wlan:$(REMOTE):$(REVI) \
 hardware/qcom/bt:hardware_qcom_bt:$(REMOTE):$(REVI)
 
 else
-REVI ?= 9.0
+REVI ?= pie
 
 TARGET_PRODUCT_HALS ?= \
 hardware/qcom/audio/default:hardware_qcom_audio:$(REMOTE):$(REVI) \
@@ -53,7 +53,7 @@ endif
 .PHONY: hals
 hals :
 	$(shell echo $(TARGET_PRODUCT_HALS) > target_hals)
-	$(shell vendor/custom/build/tools/halsync.sh)
+	$(shell vendor/chidori/build/tools/halsync.sh)
 	unset TARGET_PRODUCT_HALS
 	unset REVI
 	unset REMOTE

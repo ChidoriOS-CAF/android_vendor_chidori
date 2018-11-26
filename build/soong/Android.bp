@@ -1,6 +1,6 @@
 bootstrap_go_package {
-    name: "soong-custom",
-    pkgPath: "custom/soong/android",
+    name: "soong-chidori",
+    pkgPath: "chidori/soong/android",
     srcs: [
         "android/variable.go",
     ],

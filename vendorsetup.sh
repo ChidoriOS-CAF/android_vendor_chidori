@@ -1,3 +1,3 @@
-. "$(gettop)/vendor/custom/build/envsetup.sh"
+. "$(gettop)/vendor/chidori/build/envsetup.sh"
 
-custom_device_combos
+chidori_device_combos
