@@ -11,12 +11,9 @@ UM_PLATFORMS := $(UM_3_18_FAMILY) $(UM_4_4_FAMILY) $(UM_4_9_FAMILY)
 
 BOARD_USES_ADRENO := true
 
-ifneq ($(call is-board-platform-in-list, $(UM_PLATFORMS)),true)
 # UM platforms no longer need this set on O+
+ifneq ($(call is-board-platform-in-list, $(UM_PLATFORMS)),true)
     TARGET_USES_QCOM_BSP := true
-else
-# Enable color metadata for every UM platform
-    TARGET_USES_COLOR_METADATA := true
 endif
 
 # Tell HALs that we're compiling an AOSP build with an in-line kernel
@@ -81,6 +78,11 @@ endif
 endif
 endif
 endif
+
+PRODUCT_SOONG_NAMESPACES += \
+    hardware/qcom/audio-caf/$(QCOM_HARDWARE_VARIANT) \
+    hardware/qcom/display-caf/$(QCOM_HARDWARE_VARIANT) \
+    hardware/qcom/media-caf/$(QCOM_HARDWARE_VARIANT)
 
 # QCOM HW crypto
 ifeq ($(TARGET_HW_DISK_ENCRYPTION),true)
