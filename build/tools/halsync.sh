@@ -1,6 +1,7 @@
 #!/bin/bash
 if [ ! -f .repo/local_manifests/hals.xml ]; then
 # Initial vars setup
+    REMOTE="kaf"
 
 # Sanitize the vars used internally by this script
     unset HALS
@@ -8,12 +9,10 @@ if [ ! -f .repo/local_manifests/hals.xml ]; then
 # Make the HALs manifest
     echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<manifest>' > .repo/local_manifests/hals.xml
     for hal in $(<target_hals); do
-        hals=$(echo $hal | sed -e 's/:/ /g')
-        path=$(echo $hals | cut -d " " -f 1)
-        name=$(echo $hals | cut -d " " -f 2)
-        remote=$(echo $hals | cut -d " " -f 3)
-        rev=$(echo $hals | cut -d " " -f 4)
-	    echo '  <project path="'"$path"'" name="'"$name"'" remote="'"$remote"'" revision="'"$rev"'" />' >> .repo/local_manifests/hals.xml
+        rev=$(echo $hal | sed -e 's/.*://')
+        path=$(echo $hal | sed -e 's/:.*//')
+        name=$(echo $path | sed -e 's=/=_=g')
+	    echo '  <project path="'"$path"'" name="'"$name"'" remote="'"$REMOTE"'" revision="'"$rev"'" />' >> .repo/local_manifests/hals.xml
         HALS=$(echo -e "$HALS $path")
     done
     echo "</manifest>" >> .repo/local_manifests/hals.xml
