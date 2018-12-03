@@ -22,6 +22,7 @@ hardware/qcom/display:$(REVI)-$(QCOM_HARDWARE_VARIANT) \
 hardware/qcom/media:$(REVI)-$(QCOM_HARDWARE_VARIANT) \
 hardware/qcom/camera:$(REVI) \
 hardware/qcom/gps:$(REVI) \
+hardware/qcom/sensors:$(REVI) \
 vendor/qcom/opensource/location:$(REVI) \
 vendor/qcom/opensource/dataservices:$(REVI) \
 hardware/qcom/power:$(REVI) \
@@ -38,6 +39,7 @@ hardware/qcom/display:$(REVI) \
 hardware/qcom/media:$(REVI) \
 hardware/qcom/camera:$(REVI) \
 hardware/qcom/gps:$(REVI) \
+hardware/qcom/sensors:$(REVI) \
 vendor/qcom/opensource/location:$(REVI) \
 hardware/ril:$(REVI) \
 hardware/wlan:$(REVI) \
