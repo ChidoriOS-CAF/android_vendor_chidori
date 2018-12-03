@@ -13,8 +13,6 @@ endef
 
 # How this works:
 # If the user didn't override TARGET_PRODUCT_HALS, set them according to his platform.
-REMOTE ?= chidori
-
 ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
 REVI ?= pie-caf
 
@@ -56,4 +54,3 @@ hals :
 	$(shell vendor/chidori/build/tools/halsync.sh)
 	unset TARGET_PRODUCT_HALS
 	unset REVI
-	unset REMOTE
